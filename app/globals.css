@@ -1,0 +1,113 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* HitsON Custom Palette */
+  --background: #0a0a0f;
+  --foreground: #f5f5f5;
+  --card: #111118;
+  --card-foreground: #f5f5f5;
+  --popover: #111118;
+  --popover-foreground: #f5f5f5;
+  --primary: #ff2d75;
+  --primary-foreground: #0a0a0f;
+  --secondary: #00e5ff;
+  --secondary-foreground: #0a0a0f;
+  --muted: #1a1a24;
+  --muted-foreground: #888888;
+  --accent: #00e5ff;
+  --accent-foreground: #0a0a0f;
+  --destructive: #ff2d75;
+  --destructive-foreground: #f5f5f5;
+  --border: #2a2a35;
+  --input: #1a1a24;
+  --ring: #ff2d75;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-heading: 'Space Grotesk', 'Space Grotesk Fallback', sans-serif;
+  --font-body: 'Inter', 'Inter Fallback', sans-serif;
+  --font-sans: var(--font-body);
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a35;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff2d75;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background: #ff2d75;
+  color: #0a0a0f;
+}
+
+/* Glow effects */
+.glow-magenta {
+  box-shadow: 0 0 20px rgba(255, 45, 117, 0.4);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+.text-glow-magenta {
+  text-shadow: 0 0 20px rgba(255, 45, 117, 0.6);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+}
