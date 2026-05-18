@@ -6,6 +6,7 @@ import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Send, Loader2, Instagram, Facebook, Youtube } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 export function ContactSection() {
   const ref = useRef(null)
@@ -13,20 +14,34 @@ export function ContactSection() {
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email) return
     
     setIsSubmitting(true)
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setEmail('')
+    setError(null)
     
-    // Reset after 3 seconds
-    setTimeout(() => setIsSubmitted(false), 3000)
+    try {
+      const supabase = createClient()
+      const { error: insertError } = await supabase
+        .from('contacts')
+        .insert({ email })
+      
+      if (insertError) throw insertError
+      
+      setIsSubmitted(true)
+      setEmail('')
+      
+      // Reset after 3 seconds
+      setTimeout(() => setIsSubmitted(false), 3000)
+    } catch (err) {
+      console.error('Error saving contact:', err)
+      setError('Hubo un error. Intenta de nuevo.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -94,6 +109,16 @@ export function ContactSection() {
             className="text-secondary mt-4 text-sm"
           >
             ¡Gracias! Te contactare pronto.
+          </motion.p>
+        )}
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-red-500 mt-4 text-sm"
+          >
+            {error}
           </motion.p>
         )}
 
