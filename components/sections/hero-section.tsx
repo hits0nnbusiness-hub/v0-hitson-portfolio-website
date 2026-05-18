@@ -4,7 +4,11 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 
-export function HeroSection() {
+interface HeroSectionProps {
+  accentColor?: string
+}
+
+export function HeroSection({ accentColor = '#39C5BB' }: HeroSectionProps) {
   return (
     <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Video Background Placeholder */}
@@ -50,7 +54,13 @@ export function HeroSection() {
         >
           <h1 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-4">
             <span className="text-foreground">Hits</span>
-            <span className="text-primary text-glow-miku">ON</span>
+            <span 
+              className="transition-colors duration-300"
+              style={{ 
+                color: accentColor,
+                textShadow: `0 0 30px ${accentColor}99`
+              }}
+            >ON</span>
           </h1>
         </motion.div>
 
@@ -81,7 +91,11 @@ export function HeroSection() {
         >
           <Button
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-heading font-semibold px-8 py-6 text-lg glow-miku transition-all hover:scale-105"
+            className="text-primary-foreground font-heading font-semibold px-8 py-6 text-lg transition-all hover:scale-105"
+            style={{
+              backgroundColor: accentColor,
+              boxShadow: `0 0 20px ${accentColor}66`
+            }}
             onClick={() => window.open('https://vimeo.com/1177795498?fl=pl&fe=sh', '_blank')}
           >
             Ver Reel

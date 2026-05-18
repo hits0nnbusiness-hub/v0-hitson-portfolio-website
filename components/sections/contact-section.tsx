@@ -34,6 +34,13 @@ export function ContactSection({ accentColor }: ContactSectionProps) {
         .insert({ email })
       
       if (insertError) throw insertError
+
+      // Enviar notificacion
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
       
       setIsSubmitted(true)
       setEmail('')

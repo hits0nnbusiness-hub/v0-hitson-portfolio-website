@@ -54,7 +54,16 @@ export default function Home() {
         }
       `}</style>
       <main className="min-h-screen bg-background">
-        <HeroSection />
+        {/* Color indicator line at top */}
+        <div 
+          className="fixed top-0 left-0 h-1 z-50 transition-all duration-100"
+          style={{ 
+            width: `${scrollProgress * 100}%`,
+            backgroundColor: accentColor,
+            boxShadow: `0 0 10px ${accentColor}`
+          }}
+        />
+        <HeroSection accentColor={accentColor} />
         <AboutSection accentColor={accentColor} />
         <StudioSection accentColor={accentColor} />
         <WorkSection accentColor={accentColor} />
