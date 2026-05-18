@@ -8,7 +8,11 @@ import { Input } from '@/components/ui/input'
 import { Send, Loader2, Instagram, Facebook, Youtube } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
-export function ContactSection() {
+interface ContactSectionProps {
+  accentColor?: string
+}
+
+export function ContactSection({ accentColor }: ContactSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [email, setEmail] = useState('')
@@ -87,7 +91,11 @@ export function ContactSection() {
           <Button
             type="submit"
             disabled={isSubmitting || isSubmitted}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-heading font-semibold h-12 px-6 glow-miku transition-all hover:scale-105 disabled:opacity-70"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-heading font-semibold h-12 px-6 transition-all hover:scale-105 disabled:opacity-70"
+            style={{
+              backgroundColor: accentColor,
+              boxShadow: accentColor ? `0 0 20px ${accentColor}66` : undefined,
+            }}
           >
             {isSubmitting ? (
               <Loader2 className="w-5 h-5 animate-spin" />

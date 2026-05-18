@@ -17,7 +17,11 @@ const skills = [
   'Toon Boom Harmony',
 ]
 
-export function AboutSection() {
+interface AboutSectionProps {
+  accentColor?: string
+}
+
+export function AboutSection({ accentColor }: AboutSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -77,11 +81,19 @@ export function AboutSection() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: 0.4, delay: 0.5 + index * 0.05 }}
-                  className="px-4 py-2 bg-muted/50 border border-border rounded-full text-sm font-medium text-foreground/80 hover:border-primary hover:text-primary hover:bg-primary/10 transition-all cursor-default"
+                  className="px-4 py-2 bg-muted/50 border border-border rounded-full text-sm font-medium text-foreground/80 hover:bg-primary/10 transition-all cursor-default"
                   style={{
-                    boxShadow: index % 2 === 0 
-                      ? '0 0 15px rgba(255, 45, 117, 0.1)' 
-                      : '0 0 15px rgba(0, 229, 255, 0.1)'
+                    boxShadow: accentColor ? `0 0 15px ${accentColor}20` : '0 0 15px rgba(57, 197, 187, 0.1)',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (accentColor) {
+                      e.currentTarget.style.borderColor = accentColor
+                      e.currentTarget.style.color = accentColor
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = ''
+                    e.currentTarget.style.color = ''
                   }}
                 >
                   {skill}
