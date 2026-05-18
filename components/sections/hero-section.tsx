@@ -70,7 +70,7 @@ export function HeroSection() {
           className="text-secondary/80 italic text-sm sm:text-base mb-10 font-body"
         >
           &ldquo;Ma nel xochitl, ma nel cuicatl!&rdquo;
-          <span className="block text-xs text-muted-foreground mt-1">Aunque sea flor, aunque sea canto</span>
+          <span className="block text-xs text-muted-foreground mt-1">Al menos flores, al menos cantos</span>
         </motion.p>
 
         <motion.div
