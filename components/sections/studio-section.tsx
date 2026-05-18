@@ -32,7 +32,11 @@ const services = [
   },
 ]
 
-export function StudioSection() {
+interface StudioSectionProps {
+  accentColor?: string
+}
+
+export function StudioSection({ accentColor }: StudioSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -73,22 +77,14 @@ export function StudioSection() {
               className="group"
             >
               <div 
-                className={`relative bg-card border border-border rounded-lg p-6 md:p-8 text-center transition-all duration-300 hover:border-${service.color} hover:scale-105 cursor-pointer overflow-hidden`}
-                style={{
-                  boxShadow: service.color === 'primary' 
-                    ? '0 0 30px rgba(255, 45, 117, 0)' 
-                    : '0 0 30px rgba(0, 229, 255, 0)',
-                }}
+                className="relative bg-card border border-border rounded-lg p-6 md:p-8 text-center transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden"
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = service.color === 'primary'
-                    ? '0 0 30px rgba(255, 45, 117, 0.2)'
-                    : '0 0 30px rgba(0, 229, 255, 0.2)'
-                  e.currentTarget.style.borderColor = service.color === 'primary'
-                    ? '#ff2d75'
-                    : '#00e5ff'
+                  const glowColor = accentColor || (service.color === 'primary' ? '#39C5BB' : '#00e5ff')
+                  e.currentTarget.style.boxShadow = `0 0 30px ${glowColor}33`
+                  e.currentTarget.style.borderColor = glowColor
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 0 30px rgba(255, 45, 117, 0)'
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(57, 197, 187, 0)'
                   e.currentTarget.style.borderColor = ''
                 }}
               >

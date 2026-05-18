@@ -62,7 +62,11 @@ const projects = [
   },
 ]
 
-export function WorkSection() {
+interface WorkSectionProps {
+  accentColor?: string
+}
+
+export function WorkSection({ accentColor }: WorkSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
@@ -104,12 +108,10 @@ export function WorkSection() {
                 className="relative aspect-video bg-card border border-border rounded-lg overflow-hidden transition-all duration-300"
                 style={{
                   boxShadow: hoveredIndex === index
-                    ? project.color === 'primary'
-                      ? '0 0 40px rgba(255, 45, 117, 0.3)'
-                      : '0 0 40px rgba(0, 229, 255, 0.3)'
+                    ? `0 0 40px ${accentColor || '#39C5BB'}4D`
                     : 'none',
                   borderColor: hoveredIndex === index
-                    ? project.color === 'primary' ? '#ff2d75' : '#00e5ff'
+                    ? accentColor || '#39C5BB'
                     : '',
                   transform: hoveredIndex === index ? 'scale(1.02)' : 'scale(1)',
                 }}
