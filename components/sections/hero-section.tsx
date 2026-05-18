@@ -50,7 +50,7 @@ export function HeroSection() {
         >
           <h1 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-4">
             <span className="text-foreground">Hits</span>
-            <span className="text-primary text-glow-magenta">ON</span>
+            <span className="text-primary text-glow-miku">ON</span>
           </h1>
         </motion.div>
 
@@ -69,8 +69,8 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-secondary/80 italic text-sm sm:text-base mb-10 font-body"
         >
-          &ldquo;Stories from the digital underworld.&rdquo;
-          <span className="block text-xs text-muted-foreground mt-1">— Tlatolli itech mictlan digital</span>
+          &ldquo;Ma nel xochitl, ma nel cuicatl!&rdquo;
+          <span className="block text-xs text-muted-foreground mt-1">Aunque sea flor, aunque sea canto</span>
         </motion.p>
 
         <motion.div
@@ -81,7 +81,7 @@ export function HeroSection() {
         >
           <Button
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-heading font-semibold px-8 py-6 text-lg glow-magenta transition-all hover:scale-105"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-heading font-semibold px-8 py-6 text-lg glow-miku transition-all hover:scale-105"
             onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
           >
             Ver Reel
