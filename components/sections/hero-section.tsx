@@ -82,7 +82,7 @@ export function HeroSection() {
           <Button
             size="lg"
             className="bg-primary hover:bg-primary/90 text-primary-foreground font-heading font-semibold px-8 py-6 text-lg glow-miku transition-all hover:scale-105"
-            onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => window.open('https://vimeo.com/1177795498?fl=pl&fe=sh', '_blank')}
           >
             Ver Reel
           </Button>
