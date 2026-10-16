@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Play, Award, Star, ExternalLink } from 'lucide-react'
 import { useLang } from '@/components/lang'
 
@@ -15,6 +15,7 @@ const projects = [
     festival: 'Haz Corto con la Corrupción Festival',
     color: 'primary',
     featured: true,
+    clip: 'votante-flojo',
   },
   {
     title: 'Agüita de Más',
@@ -24,8 +25,65 @@ const projects = [
     festival: 'Construir Cine · Argentina',
     color: 'secondary',
     featured: true,
+    clip: 'agua-de-mas',
+  },
+  {
+    title: 'ELEMENT0',
+    year: '',
+    role: { es: 'Cortometraje animado', en: 'Animated short film' },
+    achievement: null,
+    festival: null,
+    color: 'primary',
+    featured: false,
+    clip: 'element0',
+  },
+  {
+    title: 'Skibidi Alliance',
+    year: '',
+    role: { es: 'Película fan', en: 'Fan movie' },
+    achievement: null,
+    festival: null,
+    color: 'secondary',
+    featured: false,
+    clip: 'skibidi-alliance',
+  },
+  {
+    title: 'Verity',
+    year: '',
+    role: { es: 'Película fan de Minecraft', en: 'Minecraft fan movie' },
+    achievement: null,
+    festival: null,
+    color: 'primary',
+    featured: false,
+    clip: 'verity',
   },
 ]
+
+function Clip({ name }: { name: string }) {
+  const v = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const el = v.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) el.play().catch(() => {})
+      else el.pause()
+    }, { threshold: 0.3 })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <video
+      ref={v}
+      src={`/media/${name}.mp4`}
+      poster={`/media/${name}.jpg`}
+      muted
+      loop
+      playsInline
+      preload="none"
+      className="absolute inset-0 h-full w-full object-cover"
+    />
+  )
+}
 
 interface WorkSectionProps {
   accentColor?: string
@@ -59,7 +117,7 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -82,12 +140,9 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
                   transform: hoveredIndex === index ? 'scale(1.02)' : 'scale(1)',
                 }}
               >
-                {/* Placeholder for project image/video */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${
-                  project.color === 'primary'
-                    ? 'from-primary/20 via-background to-background'
-                    : 'from-secondary/20 via-background to-background'
-                }`} />
+                {/* Clip del proyecto */}
+                <Clip name={project.clip} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
 
                 {/* Play Icon */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -107,9 +162,11 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
                 )}
 
                 {/* Year Badge */}
-                <div className="absolute top-3 right-3 bg-background/90 backdrop-blur-sm px-2 py-1 rounded text-xs text-muted-foreground">
-                  {project.year}
-                </div>
+                {project.year && (
+                  <div className="absolute top-3 right-3 bg-background/90 backdrop-blur-sm px-2 py-1 rounded text-xs text-muted-foreground">
+                    {project.year}
+                  </div>
+                )}
               </div>
 
               {/* Project Info */}

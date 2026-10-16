@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Navbar } from '@/components/navbar'
 import { LangProvider } from '@/components/lang'
+import { AeonCompanion } from '@/components/aeon-companion'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({ 
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <LangProvider>
           <Navbar />
+          <AeonCompanion />
           {/* pt-14 so content doesn't hide behind the fixed navbar */}
           <div className="pt-14">
             {children}

@@ -66,6 +66,13 @@ export function AboutSection({ accentColor }: AboutSectionProps) {
               {t('Cortometrajes ', 'Short films ')}
               <span className="text-secondary">{t('premiados en festivales internacionales', 'awarded at international festivals')}</span>.
             </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/foto-hnahum-5.webp"
+              alt="HitsON"
+              loading="lazy"
+              className="mb-6 w-full rounded-xl border border-border object-cover aspect-[3/2]"
+            />
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
               <span>{t('Desde México', 'Based in Mexico')}</span>

@@ -1,17 +1,30 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useLang } from '@/components/lang'
 
 type Sheet = { src: string; w: number; h: number; cols: number; frames: number }
 
-const LOBITSON: Sheet = { src: '/hitson3d/sprites/lobitson.webp', w: 170, h: 195, cols: 10, frames: 47 }
-const HITSON: Sheet = { src: '/hitson3d/sprites/hitson.webp', w: 113, h: 187, cols: 10, frames: 25 }
+// Un solo escenario: baila uno, CORTE, baila el otro, CORTE… infinito.
+const DANCERS: Sheet[] = [
+  { src: '/hitson3d/sprites/lobitson.webp', w: 213, h: 232, cols: 10, frames: 66 },
+  { src: '/hitson3d/sprites/hitson.webp', w: 213, h: 232, cols: 10, frames: 66 },
+]
+const FPS = 12
 
-function SpriteDancer({ sheet, scale, fps = 12, label }: { sheet: Sheet; scale: number; fps?: number; label: string }) {
+export function DanceSection() {
   const ref = useRef<HTMLDivElement>(null)
-  const [frame, setFrame] = useState(0)
   const [visible, setVisible] = useState(false)
+  const [who, setWho] = useState(0)
+  const [frame, setFrame] = useState(0)
+  const [cut, setCut] = useState(false)
+  const [scale, setScale] = useState(1)
+
+  useEffect(() => {
+    const upd = () => setScale(window.innerWidth >= 768 ? 2 : 1.5)
+    upd()
+    window.addEventListener('resize', upd)
+    return () => window.removeEventListener('resize', upd)
+  }, [])
 
   useEffect(() => {
     const el = ref.current
@@ -21,50 +34,37 @@ function SpriteDancer({ sheet, scale, fps = 12, label }: { sheet: Sheet; scale: 
     return () => io.disconnect()
   }, [])
 
+  // precargar los dos para que el corte sea instantáneo
   useEffect(() => {
     if (!visible) return
-    const id = setInterval(() => setFrame((f) => (f + 1) % sheet.frames), 1000 / fps)
-    return () => clearInterval(id)
-  }, [visible, fps, sheet.frames])
+    DANCERS.forEach((d) => { const i = new Image(); i.src = d.src })
+  }, [visible])
 
-  const x = (frame % sheet.cols) * sheet.w * scale
-  const y = Math.floor(frame / sheet.cols) * sheet.h * scale
-
-  return (
-    <figure className="flex flex-col items-center gap-3">
-      <div
-        ref={ref}
-        role="img"
-        aria-label={label}
-        style={{
-          width: sheet.w * scale,
-          height: sheet.h * scale,
-          backgroundImage: visible ? `url(${sheet.src})` : undefined,
-          backgroundSize: `${sheet.cols * sheet.w * scale}px auto`,
-          backgroundPosition: `-${x}px -${y}px`,
-          backgroundRepeat: 'no-repeat',
-          imageRendering: 'pixelated',
-          filter: 'drop-shadow(0 0 1px #8fc1ff) drop-shadow(0 0 10px #2f7bff55)',
-        }}
-      />
-      <figcaption className="font-mono text-[10px] tracking-[0.3em] text-[#8fc1ff]/70">{label}</figcaption>
-    </figure>
-  )
-}
-
-export function DanceSection() {
-  const { t } = useLang()
-  const [scale, setScale] = useState(1)
-
+  const pos = useRef({ who: 0, frame: 0 })
   useEffect(() => {
-    const upd = () => setScale(window.innerWidth >= 768 ? 2 : 1)
-    upd()
-    window.addEventListener('resize', upd)
-    return () => window.removeEventListener('resize', upd)
-  }, [])
+    if (!visible) return
+    const id = setInterval(() => {
+      const p = pos.current
+      p.frame += 1
+      if (p.frame >= DANCERS[p.who].frames) {
+        // CORTE: flashazo y cambia de bailarín
+        p.frame = 0
+        p.who = (p.who + 1) % DANCERS.length
+        setCut(true)
+        setTimeout(() => setCut(false), 90)
+        setWho(p.who)
+      }
+      setFrame(p.frame)
+    }, 1000 / FPS)
+    return () => clearInterval(id)
+  }, [visible])
+
+  const d = DANCERS[who]
+  const x = (frame % d.cols) * d.w * scale
+  const y = Math.floor(frame / d.cols) * d.h * scale
 
   return (
-    <section id="dance" className="relative py-24 md:py-32 px-4 overflow-hidden bg-[#05060a]">
+    <section id="dance" className="relative py-20 md:py-28 px-4 overflow-hidden bg-[#05060a]">
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#2f7bff]/40 to-transparent" />
       <div
         className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none opacity-[0.12]"
@@ -77,22 +77,32 @@ export function DanceSection() {
           maskImage: 'linear-gradient(to top, black, transparent)',
         }}
       />
-      <div className="relative max-w-6xl mx-auto text-center">
-        <p className="font-mono text-[11px] tracking-[0.3em] text-[#8fc1ff] mb-3">
-          {t('NIVEL 01 // PISTA DE BAILE', 'LEVEL 01 // DANCE FLOOR')}
-        </p>
-        <h2 className="font-heading text-3xl md:text-5xl font-bold mb-14">
-          Lobitson <span className="text-[#2f7bff]">×</span> HitsON
-        </h2>
-        <div className="flex items-end justify-center gap-8 md:gap-20">
-          <SpriteDancer sheet={LOBITSON} scale={scale} label="LOBITSON" />
-          <SpriteDancer sheet={HITSON} scale={scale} label="HITSON" />
-        </div>
+      <div className="relative flex flex-col items-center">
         <div
-          className="mx-auto mt-2 h-6 max-w-xl rounded-[50%] blur-xl"
-          style={{ background: 'radial-gradient(closest-side, #2f7bff66, transparent)' }}
+          ref={ref}
+          role="img"
+          aria-label="HitsON dance"
+          style={{
+            width: d.w * scale,
+            height: d.h * scale,
+            backgroundImage: visible ? `url(${d.src})` : undefined,
+            backgroundSize: `${d.cols * d.w * scale}px auto`,
+            backgroundPosition: `-${x}px -${y}px`,
+            backgroundRepeat: 'no-repeat',
+            imageRendering: 'pixelated',
+            filter: 'drop-shadow(0 0 1px #8fc1ff) drop-shadow(0 0 12px #2f7bff55)',
+          }}
+        />
+        <div
+          className="-mt-2 h-6 w-64 max-w-full rounded-[50%] blur-xl"
+          style={{ background: 'radial-gradient(closest-side, #2f7bff77, transparent)' }}
         />
       </div>
+      {/* flashazo del corte */}
+      <div
+        className="absolute inset-0 pointer-events-none bg-white mix-blend-overlay transition-opacity duration-75"
+        style={{ opacity: cut ? 0.35 : 0 }}
+      />
     </section>
   )
 }

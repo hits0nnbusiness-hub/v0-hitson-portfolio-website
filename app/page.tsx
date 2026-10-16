@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { HeroSection } from '@/components/sections/hero-section'
 import { AboutSection } from '@/components/sections/about-section'
+import { AchievementsSection } from '@/components/sections/achievements-section'
+import { ReleaseSection } from '@/components/sections/release-section'
 import { DanceSection } from '@/components/sections/dance-section'
 
 export default function Home() {
@@ -46,7 +48,9 @@ export default function Home() {
       <main className="min-h-screen bg-background">
         <HeroSection  accentColor={accentColor} />
         <AboutSection accentColor={accentColor} />
+        <AchievementsSection />
         <DanceSection />
+        <ReleaseSection />
       </main>
     </>
   )

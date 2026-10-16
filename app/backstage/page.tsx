@@ -10,9 +10,11 @@ import { ImageIcon } from 'lucide-react'
 //   tag   → "Detrás de cámaras" | "Actor" | "Portfolio" | etc.
 // ─────────────────────────────────────────────
 const photos: { src: string; alt: string; tag: string }[] = [
-  // Ejemplo (descomenta cuando subas tus fotos):
-  // { src: '/backstage/foto1.jpg', alt: 'Kill In Papa set', tag: 'Detrás de cámaras' },
-  // { src: '/backstage/foto2.jpg', alt: 'Actuación',        tag: 'Actor'             },
+  { src: '/media/foto-hitson1.webp', alt: 'HitsON', tag: 'Portfolio' },
+  { src: '/media/foto-hnahum-5.webp', alt: 'HitsON', tag: 'Portfolio' },
+  { src: '/media/foto-ari1.webp', alt: 'HitsON', tag: 'Portfolio' },
+  { src: '/media/foto-h_0.webp', alt: 'HitsON', tag: 'Portfolio' },
+  { src: '/media/foto-hitson2.webp', alt: 'HitsON', tag: 'Portfolio' },
 ]
 
 const tags = ['Todos', 'Detrás de cámaras', 'Actor', 'Portfolio']
