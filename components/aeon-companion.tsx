@@ -22,10 +22,8 @@ const LINES: Record<string, [string, string]> = {
 }
 const CLICK: [string, string][] = [
   ['Soy AEON, el bot de HitsON.', "I'm AEON, HitsON's bot."],
-  ['Niteocuitlatl. 💩✨ Soy oro… o sea, caca de los dioses.', 'Niteocuitlatl. 💩✨ I am gold… aka shit of the gods.'],
+  ['Xictzacua mocamac. 🤖', 'Xictzacua mocamac. 🤖'],
   ['No me toques los sensores 😤', "Don't touch my sensors 😤"],
-  ["I'll be the hottest cameraman… 🚽🪠", "I'll be the hottest cameraman… 🚽🪠"],
-  ['Ma nel xochitl, ma nel cuicatl.', 'Ma nel xochitl, ma nel cuicatl.'],
 ]
 
 export function AeonCompanion() {
@@ -136,7 +134,7 @@ export function AeonCompanion() {
       <div
         ref={ref}
         className="pointer-events-auto cursor-pointer w-[84px] h-[84px] md:w-[170px] md:h-[170px]"
-        title="AEON · Niteocuitlatl"
+        title="AEON"
         style={{
           maskImage: 'radial-gradient(closest-side, #000 70%, transparent 100%)',
           WebkitMaskImage: 'radial-gradient(closest-side, #000 70%, transparent 100%)',
