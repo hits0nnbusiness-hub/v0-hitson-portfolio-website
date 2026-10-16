@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { ChevronDown, Play } from 'lucide-react'
 import { HitsON3D } from '@/components/hitson-3d'
 import { useLang } from '@/components/lang'
+import { MusicPlayer } from '@/components/music-player'
 
 const AURA = '#2f7bff'
 const REEL_URL = 'https://vimeo.com/1177795498?fl=pl&fe=sh'
@@ -121,6 +122,15 @@ export function HeroSection({ accentColor = AURA }: HeroSectionProps) {
             >
               {t('Colaboremos', "Let's collaborate")}
             </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="mt-8 flex justify-center md:justify-start"
+          >
+            <MusicPlayer />
           </motion.div>
         </div>
 
