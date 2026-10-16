@@ -16,6 +16,7 @@ const projects = [
     color: 'primary',
     featured: true,
     clip: 'votante-flojo',
+    url: '',
   },
   {
     title: 'Agüita de Más',
@@ -26,6 +27,7 @@ const projects = [
     color: 'secondary',
     featured: true,
     clip: 'agua-de-mas',
+    url: '',
   },
   {
     title: 'ELEMENT0',
@@ -36,11 +38,13 @@ const projects = [
     color: 'primary',
     featured: false,
     clip: 'element0',
+    url: '',
   },
   {
     title: 'Skibidi Alliance',
     year: '',
-    role: { es: 'Película fan', en: 'Fan movie' },
+    role: { es: 'Película basada en Skibidi Toilet · Dirigida por HitsON', en: 'Film based on Skibidi Toilet · Directed by HitsON' },
+    url: 'https://www.youtube.com/watch?v=bQQnrT-xw_w&t=25s',
     achievement: null,
     festival: null,
     color: 'secondary',
@@ -50,7 +54,8 @@ const projects = [
   {
     title: 'Verity',
     year: '',
-    role: { es: 'Película fan de Minecraft', en: 'Minecraft fan movie' },
+    role: { es: 'Película basada en el mod Verity de Minecraft · Dirigida por HitsON', en: 'Film based on the Minecraft mod Verity · Directed by HitsON' },
+    url: 'https://www.youtube.com/watch?v=1IR34JWLaGU&t=380s',
     achievement: null,
     festival: null,
     color: 'primary',
@@ -126,7 +131,8 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
               transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              className="group cursor-pointer"
+              onClick={() => { if (project.url) window.open(project.url, '_blank', 'noopener') }}
+              className={`group ${project.url ? 'cursor-pointer' : ''}`}
             >
               <div
                 className="relative aspect-video bg-card border border-border rounded-lg overflow-hidden transition-all duration-300"
@@ -175,7 +181,7 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
                   <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
-                  <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1" />
+                  {project.url && <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1" />}
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">{t(project.role.es, project.role.en)}</p>
                 {project.festival && (

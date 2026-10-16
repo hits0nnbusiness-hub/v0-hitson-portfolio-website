@@ -1,4 +1,4 @@
-// AEON — dron acompañante de HitsON. Flota, sigue el scroll y mira hacia el cursor.
+// AEON — bot acompañante de HitsON. Flota, sigue el scroll y mira hacia el cursor.
 import * as THREE from './vendor/three.module.js'
 import { GLTFLoader } from './vendor/GLTFLoader.js'
 import { RoomEnvironment } from './vendor/RoomEnvironment.js'
@@ -63,6 +63,7 @@ function mount(el, onClick) {
     m.traverse((o) => {
       if (!o.isMesh) return
       o.frustumCulled = false
+      if (/^Icosphere/i.test(o.name)) { o.visible = false; return }   // sin pelotas negras en las patas
       const mt = o.material
       if (!mt) return
       if (mt.name === 'Iron') {                 // patas: óxido naranja como en Blender
@@ -76,7 +77,7 @@ function mount(el, onClick) {
     })
     // centrar con las piezas reales (sin calcomanías sueltas)
     const box = new THREE.Box3()
-    m.traverse((o) => { if (o.isMesh && !/^Decal/i.test(o.name)) box.expandByObject(o) })
+    m.traverse((o) => { if (o.isMesh && o.visible && !/^Decal/i.test(o.name)) box.expandByObject(o) })
     const c = box.getCenter(new THREE.Vector3())
     const s = box.getSize(new THREE.Vector3())
     size = Math.max(s.x, s.y, s.z)

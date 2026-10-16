@@ -17,16 +17,24 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'HitsON | Digital Filmmaker · 3D Animation · VFX',
+  title: 'HitsON | Filmmaker · Actor · 3D Animation · Music',
   description: 'Multifaceted artist specializing in 3D animation, VFX, sound design, and video editing. Stories from the digital underworld.',
   keywords: ['HitsON', 'filmmaker', '3D animation', 'VFX', 'sound design', 'video editing', 'Mexico', 'Gold Feathers'],
   authors: [{ name: 'HitsON - Horacio Nahum Avendaño' }],
-  generator: 'v0.app',
+  metadataBase: new URL('https://hitson.site'),
+  openGraph: {
+    title: 'HitsON',
+    description: 'Filmmaker · Actor · 3D Animation · Music',
+    url: 'https://hitson.site',
+    siteName: 'HitsON',
+    images: [{ url: '/og.jpg', width: 1200, height: 630 }],
+    type: 'website',
+  },
+  twitter: { card: 'summary_large_image', images: ['/og.jpg'] },
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png',  media: '(prefers-color-scheme: dark)'  },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-light-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: '/apple-icon.png',
   },

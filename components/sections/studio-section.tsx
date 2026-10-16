@@ -10,24 +10,28 @@ const services = [
     icon: Music,
     title: 'Música',
     titleEn: 'Music',
+    href: 'https://goldfeathers.fanlink.tv/hitson',
     color: 'primary',
   },
   {
     icon: Film,
     title: 'Animación',
     titleEn: 'Animation',
+    href: 'https://www.youtube.com/watch?v=tOYTn0uTnzE',
     color: 'secondary',
   },
   {
     icon: Clapperboard,
     title: 'Cine',
     titleEn: 'Cinema',
+    href: 'https://www.youtube.com/watch?v=bQQnrT-xw_w&t=25s',
     color: 'primary',
   },
   {
     icon: Image,
     title: 'Galería',
     titleEn: 'Gallery',
+    href: '/backstage',
     color: 'secondary',
   },
 ]
@@ -76,8 +80,11 @@ export function StudioSection({ accentColor }: StudioSectionProps) {
               transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
               className="group"
             >
-              <div 
-                className="relative bg-card border border-border rounded-lg p-6 md:p-8 text-center transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden"
+              <a
+                href={service.href}
+                target={service.href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                className="block relative bg-card border border-border rounded-lg p-6 md:p-8 text-center transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden"
                 onMouseEnter={(e) => {
                   const glowColor = accentColor || (service.color === 'primary' ? '#39C5BB' : '#00e5ff')
                   e.currentTarget.style.boxShadow = `0 0 30px ${glowColor}33`
@@ -101,7 +108,7 @@ export function StudioSection({ accentColor }: StudioSectionProps) {
                 <span className="text-xs text-muted-foreground">
                   {service.titleEn}
                 </span>
-              </div>
+              </a>
             </motion.div>
           ))}
         </div>

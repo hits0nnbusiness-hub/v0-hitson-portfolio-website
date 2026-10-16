@@ -70,7 +70,7 @@ export function HeroSection({ accentColor = AURA }: HeroSectionProps) {
             transition={{ duration: 0.6 }}
             className="font-mono text-[11px] md:text-xs tracking-[0.3em] text-[#8fc1ff] mb-4"
           >
-            {t('CINEASTA DIGITAL · ANIMACIÓN 3D · VFX · MÚSICA', 'DIGITAL FILMMAKER · 3D ANIMATION · VFX · MUSIC')}
+            {t('CINEASTA · ACTOR · ANIMACIÓN 3D · MÚSICA', 'FILMMAKER · ACTOR · 3D ANIMATION · MUSIC')}
           </motion.p>
 
           <motion.h1
