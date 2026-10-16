@@ -21,7 +21,7 @@ const LINES: Record<string, [string, string]> = {
   contact: ['¿Colaboramos? Escríbele a HitsON.', 'Collab? Write to HitsON.'],
 }
 const CLICK: [string, string][] = [
-  ['Soy AEON. El dron de HitsON.', "I'm AEON. HitsON's drone."],
+  ['Soy AEON, el bot de HitsON.', "I'm AEON, HitsON's bot."],
   ['No me toques los sensores 😤', "Don't touch my sensors 😤"],
   ["I'll be the hottest cameraman… 🚽🪠", "I'll be the hottest cameraman… 🚽🪠"],
   ['Ma nel xochitl, ma nel cuicatl.', 'Ma nel xochitl, ma nel cuicatl.'],
@@ -132,7 +132,15 @@ export function AeonCompanion() {
           {msg}
         </div>
       )}
-      <div ref={ref} className="pointer-events-auto cursor-pointer w-[84px] h-[84px] md:w-[170px] md:h-[170px]" title="AEON" />
+      <div
+        ref={ref}
+        className="pointer-events-auto cursor-pointer w-[84px] h-[84px] md:w-[170px] md:h-[170px]"
+        title="AEON"
+        style={{
+          maskImage: 'radial-gradient(closest-side, #000 70%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(closest-side, #000 70%, transparent 100%)',
+        }}
+      />
     </div>
   )
 }

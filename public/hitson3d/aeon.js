@@ -56,7 +56,7 @@ function mount(el, onClick) {
   const camera = new THREE.PerspectiveCamera(28, 1, 0.01, 1000)
   const root = new THREE.Group()   // flote + giro
   scene.add(root)
-  let mixer = null, ready = false, size = 1
+  let mixer = null, ready = false, size = 1, eyeGlowPos = null
 
   new GLTFLoader().load(el.dataset.model || '/hitson3d/models/aeon.glb', (gltf) => {
     const m = gltf.scene
@@ -65,10 +65,14 @@ function mount(el, onClick) {
       o.frustumCulled = false
       const mt = o.material
       if (!mt) return
-      if (mt.name === 'Iron') {                 // patas: óxido como en Blender
-        mt.color.set('#6e3d24'); mt.metalness = 0.55; mt.roughness = 0.6
+      if (mt.name === 'Iron') {                 // patas: óxido naranja como en Blender
+        mt.color.set('#b0601f'); mt.metalness = 0.35; mt.roughness = 0.75
       }
-      if (mt.emissive && mt.emissiveIntensity > 3) mt.emissiveIntensity = 1.4   // ojo cyan sin quemarse
+      if (mt.name === 'Material.003') {        // pantalla del ojo: negra brillante
+        mt.color.set('#050608'); mt.emissive.set('#000000'); mt.emissiveIntensity = 0
+        mt.metalness = 0.2; mt.roughness = 0.15
+      }
+      if (mt.emissive && mt.emissiveIntensity > 3) mt.emissiveIntensity = 1.4
     })
     // centrar con las piezas reales (sin calcomanías sueltas)
     const box = new THREE.Box3()
@@ -76,20 +80,45 @@ function mount(el, onClick) {
     const c = box.getCenter(new THREE.Vector3())
     const s = box.getSize(new THREE.Vector3())
     size = Math.max(s.x, s.y, s.z)
+    const pivot = new THREE.Group()
     m.position.sub(c)
-    root.add(m)
+    pivot.add(m)
+    root.add(pivot)
+    // girar para que el ojo quede de frente a la cámara
+    let eye = null
+    m.traverse((o) => { if (o.isMesh && o.name === 'Cylinder') eye = o })
+    root.updateMatrixWorld(true)
+    if (eye) {
+      const eb = new THREE.Box3().setFromObject(eye)
+      const ec = eb.getCenter(new THREE.Vector3())
+      pivot.rotation.y = -Math.atan2(ec.x, ec.z)
+      root.updateMatrixWorld(true)
+      // ojito cerrado "^" en cyan sobre la pantalla negra
+      const eb2 = new THREE.Box3().setFromObject(eye)
+      const ec2 = eb2.getCenter(new THREE.Vector3())
+      const es = eb2.getSize(new THREE.Vector3())
+      const cv = document.createElement('canvas'); cv.width = cv.height = 256
+      const g = cv.getContext('2d')
+      g.strokeStyle = '#7ff7ee'; g.lineWidth = 22; g.lineCap = 'round'; g.lineJoin = 'round'
+      g.shadowColor = '#3ff0e0'; g.shadowBlur = 28
+      g.beginPath(); g.moveTo(64, 168); g.lineTo(128, 82); g.lineTo(192, 168); g.stroke()
+      const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace
+      const lid = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, toneMapped: false }))
+      const w = Math.max(es.x, es.y) * 0.8
+      lid.scale.set(w, w, 1)
+      lid.position.set(ec2.x, ec2.y, eb2.max.z + size * 0.004)
+      root.add(lid)
+      eyeGlowPos = new THREE.Vector3(ec2.x, ec2.y, eb2.max.z + size * 0.01)
+    }
 
-    // rayo del ojo (cono aditivo) y brillo de propulsor
-    const beam = new THREE.Mesh(
-      new THREE.ConeGeometry(size * 0.28, size * 1.6, 24, 1, true),
-      new THREE.MeshBasicMaterial({ map: beamTexture(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide })
-    )
-    beam.rotation.x = -Math.PI / 2
-    beam.position.set(0, size * 0.18, size * 0.95)
+    // brillo suave del ojo (sin cono, así no corta el cuadro) y del propulsor
+    const beam = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow('rgba(90,255,235,0.55)'), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }))
+    beam.scale.set(size * 0.55, size * 0.55, 1)
+    beam.position.copy(eyeGlowPos || new THREE.Vector3(0, size * 0.2, size * 0.4))
     root.add(beam)
     const thr = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow('rgba(80,140,255,0.9)'), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }))
-    thr.scale.set(size * 0.9, size * 0.5, 1)
-    thr.position.set(0, -size * 0.55, 0)
+    thr.scale.set(size * 0.8, size * 0.42, 1)
+    thr.position.set(0, -size * 0.5, 0)
     root.add(thr)
     root.userData = { beam, thr }
 
@@ -145,11 +174,11 @@ function mount(el, onClick) {
     cur.y += (look.y - cur.y) * 0.06
     hop = Math.max(0, hop - dt * 1.8)
     root.position.y = Math.sin(t * 2.1) * size * 0.04 + Math.sin(hop * Math.PI) * size * 0.25
-    root.rotation.y = cur.x * 0.9 + Math.sin(hop * Math.PI) * Math.PI * 2 * 0
-    root.rotation.x = cur.y * 0.35
+    root.rotation.y = cur.x * 1.1
+    root.rotation.x = cur.y * 0.45
     root.rotation.z = Math.sin(t * 1.3) * 0.04
     const { beam, thr } = root.userData
-    beam.material.opacity = 0.55 + Math.sin(t * 6) * 0.08
+    beam.material.opacity = 0.35 + Math.sin(t * 6) * 0.08
     thr.material.opacity = 0.7 + Math.sin(t * 9) * 0.2
     renderer.render(scene, camera)
   }
