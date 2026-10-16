@@ -4,13 +4,14 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { Play, Award, Star, ExternalLink } from 'lucide-react'
+import { useLang } from '@/components/lang'
 
 const projects = [
   {
     title: 'The Lazy Caesar',
     year: '2021',
-    role: 'Animator',
-    achievement: 'Best Animated Shortfilm',
+    role: { es: 'Animador', en: 'Animator' },
+    achievement: { es: 'Mejor Cortometraje Animado', en: 'Best Animated Short Film' },
     festival: 'Haz Corto con la Corrupción Festival',
     color: 'primary',
     featured: true,
@@ -18,47 +19,11 @@ const projects = [
   {
     title: 'Agüita de Más',
     year: '2024',
-    role: 'Animation & Direction',
-    achievement: 'Special Mention',
-    festival: 'Construir Cine Argentina',
+    role: { es: 'Animación y Dirección', en: 'Animation & Direction' },
+    achievement: { es: 'Mención Especial', en: 'Special Mention' },
+    festival: 'Construir Cine · Argentina',
     color: 'secondary',
     featured: true,
-  },
-  {
-    title: "Kill In' Papa",
-    year: '2025',
-    role: 'Direction · VFX · Acting · Screenwriting',
-    achievement: 'Official Selection',
-    festival: 'Lift-Off Global Network',
-    color: 'primary',
-    featured: true,
-  },
-  {
-    title: "Deep N' Dirty H",
-    year: '2023-2025',
-    role: '3D Animation Music Videos',
-    achievement: null,
-    festival: null,
-    color: 'secondary',
-    featured: false,
-  },
-  {
-    title: 'Content Creation for Business',
-    year: 'Ongoing',
-    role: '@hits0n.real',
-    achievement: null,
-    festival: null,
-    color: 'primary',
-    featured: false,
-  },
-  {
-    title: 'More Projects',
-    year: 'Coming Soon',
-    role: 'New works in progress',
-    achievement: null,
-    festival: null,
-    color: 'secondary',
-    featured: false,
   },
 ]
 
@@ -70,6 +35,7 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const { t } = useLang()
 
   return (
     <section id="work" className="py-24 md:py-32 px-4 relative overflow-hidden" ref={ref}>
@@ -85,15 +51,15 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
         >
           <span className="text-secondary text-sm font-heading tracking-widest uppercase">Portfolio</span>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mt-2">
-            Trabajos <span className="text-primary">Destacados</span>
+            {t('Trabajos ', 'Featured ')}<span className="text-primary">{t('Destacados', 'Work')}</span>
           </h2>
           <p className="text-muted-foreground mt-4">
-            Selected works / <span className="text-secondary">Tequitl</span>
+            {t('Obra seleccionada', 'Selected works')} / <span className="text-secondary">Tequitl</span>
           </p>
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -136,7 +102,7 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
                 {project.featured && project.achievement && (
                   <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-background/90 backdrop-blur-sm px-2 py-1 rounded text-xs">
                     <Award className={`w-3 h-3 ${project.color === 'primary' ? 'text-primary' : 'text-secondary'}`} />
-                    <span className="text-foreground/90">{project.achievement}</span>
+                    <span className="text-foreground/90">{t(project.achievement.es, project.achievement.en)}</span>
                   </div>
                 )}
 
@@ -154,7 +120,7 @@ export function WorkSection({ accentColor }: WorkSectionProps) {
                   </h3>
                   <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1" />
                 </div>
-                <p className="text-sm text-muted-foreground mt-1">{project.role}</p>
+                <p className="text-sm text-muted-foreground mt-1">{t(project.role.es, project.role.en)}</p>
                 {project.festival && (
                   <p className="text-xs text-secondary/80 mt-2 flex items-center gap-1">
                     <Star className="w-3 h-3" />

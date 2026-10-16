@@ -1,132 +1,147 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Play } from 'lucide-react'
+import { HitsON3D } from '@/components/hitson-3d'
+import { useLang } from '@/components/lang'
+
+const AURA = '#2f7bff'
+const REEL_URL = 'https://vimeo.com/1177795498?fl=pl&fe=sh'
 
 interface HeroSectionProps {
   accentColor?: string
 }
 
-export function HeroSection({ accentColor = '#39C5BB' }: HeroSectionProps) {
+export function HeroSection({ accentColor = AURA }: HeroSectionProps) {
+  const { t } = useLang()
+
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Video Background Placeholder */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background z-10" />
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover opacity-40"
-          poster="/video-poster.jpg"
-        >
-          {/* Placeholder for video reel - add your video source here */}
-          <source src="/reel.mp4" type="video/mp4" />
-        </video>
-        {/* Fallback animated background */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+    <section
+      id="hero"
+      className="relative min-h-[calc(100svh-3.5rem)] overflow-hidden bg-[#05060a] flex flex-col"
+    >
+      {/* Fondo: aura + rejilla tenue */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(60% 55% at 68% 50%, ${AURA}33 0%, transparent 70%), radial-gradient(40% 40% at 15% 85%, #39C5BB14 0%, transparent 70%)`,
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.07]"
+        style={{
+          backgroundImage:
+            'linear-gradient(#8fc1ff 1px, transparent 1px), linear-gradient(90deg, #8fc1ff 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+          maskImage: 'radial-gradient(70% 60% at 60% 50%, black, transparent)',
+        }}
+      />
+      {/* Scanlines */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-overlay"
+        style={{ backgroundImage: 'repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 3px)' }}
+      />
+
+      {/* Franjas de cine */}
+      <div className="absolute top-0 inset-x-0 h-[5vh] bg-black z-30" />
+      <div className="absolute bottom-0 inset-x-0 h-[5vh] bg-black z-30" />
+
+      {/* HUD */}
+      <div className="absolute z-30 top-[5vh] inset-x-0 px-4 md:px-8 pt-3 flex justify-between font-mono text-[10px] md:text-[11px] tracking-[0.25em] text-[#8fc1ff]/70 pointer-events-none">
+        <span>HITSON.EXE // ARTIST FILE 001</span>
+        <span className="hidden sm:inline">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 mr-2 align-middle animate-pulse" />
+          REC
+        </span>
+      </div>
+      <div className="absolute z-30 bottom-[5vh] inset-x-0 px-4 md:px-8 pb-3 flex justify-between font-mono text-[10px] md:text-[11px] tracking-[0.25em] text-[#8fc1ff]/60 pointer-events-none">
+        <span>{t('ARRASTRA PARA GIRAR', 'DRAG TO ROTATE')}</span>
+        <span className="hidden sm:inline">MX · {new Date().getFullYear()}</span>
       </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
-          transition={{ duration: 2 }}
-          className="absolute top-20 left-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
-          transition={{ duration: 2, delay: 0.5 }}
-          className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl"
-        />
-      </div>
+      <div className="relative z-20 flex-1 grid md:grid-cols-2 items-center max-w-7xl w-full mx-auto px-4 md:px-8 pt-[9vh] pb-[9vh] gap-2">
+        {/* Texto */}
+        <div className="order-2 md:order-1 text-center md:text-left">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="font-mono text-[11px] md:text-xs tracking-[0.3em] text-[#8fc1ff] mb-4"
+          >
+            {t('CINEASTA DIGITAL · ANIMACIÓN 3D · VFX · MÚSICA', 'DIGITAL FILMMAKER · 3D ANIMATION · VFX · MUSIC')}
+          </motion.p>
 
-      {/* Content */}
-      <div className="relative z-20 text-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="font-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-4">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="font-heading text-7xl sm:text-8xl lg:text-[9.5rem] font-bold tracking-tighter leading-[0.85] mb-6"
+          >
             <span className="text-foreground">Hits</span>
-            <span 
-              className="transition-colors duration-300"
-              style={{ 
-                color: accentColor,
-                textShadow: `0 0 30px ${accentColor}99`
-              }}
-            >ON</span>
-          </h1>
-        </motion.div>
+            <span style={{ color: accentColor, textShadow: `0 0 40px ${accentColor}aa` }}>ON</span>
+          </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-heading text-lg sm:text-xl md:text-2xl text-muted-foreground tracking-wide mb-6"
-        >
-          Digital Filmmaker · 3D Animation · VFX · Music
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="text-[#8fc1ff]/90 italic text-base md:text-lg mb-1"
+          >
+            &ldquo;Ma nel xochitl, ma nel cuicatl&rdquo;
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xs text-muted-foreground mb-10"
+          >
+            {t('Al menos flores, al menos cantos', 'At least flowers, at least songs')}
+          </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-secondary/80 italic text-sm sm:text-base mb-10 font-body"
-        >
-          &ldquo;Ma nel xochitl, ma nel cuicatl!&rdquo;
-          <span className="block text-xs text-muted-foreground mt-1">Al menos flores, al menos cantos</span>
-        </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start"
+          >
+            <a
+              href={REEL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center gap-2 rounded-md px-7 py-3.5 font-heading font-semibold text-white transition-transform hover:scale-105"
+              style={{ backgroundColor: accentColor, boxShadow: `0 0 24px ${accentColor}88` }}
+            >
+              <Play className="w-4 h-4 fill-current" />
+              {t('Ver reel', 'Watch reel')}
+            </a>
+            <Link
+              href="/contacto"
+              className="inline-flex items-center justify-center rounded-md px-7 py-3.5 font-heading font-semibold border border-[#8fc1ff]/40 text-[#cfe3ff] hover:bg-[#8fc1ff]/10 hover:border-[#8fc1ff] transition-all"
+            >
+              {t('Colaboremos', "Let's collaborate")}
+            </Link>
+          </motion.div>
+        </div>
 
+        {/* Peluche 3D */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          className="order-1 md:order-2"
         >
-          <Button
-            size="lg"
-            className="text-primary-foreground font-heading font-semibold px-8 py-6 text-lg transition-all hover:scale-105"
-            style={{
-              backgroundColor: accentColor,
-              boxShadow: `0 0 20px ${accentColor}66`
-            }}
-            onClick={() => window.open('https://vimeo.com/1177795498?fl=pl&fe=sh', '_blank')}
-          >
-            Ver Reel
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-secondary/50 text-secondary hover:bg-secondary/10 hover:border-secondary font-heading font-semibold px-8 py-6 text-lg transition-all hover:scale-105"
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            Contacto
-          </Button>
+          <HitsON3D className="w-full h-[46svh] md:h-[72svh]" />
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-8 z-20"
+      <button
+        onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+        className="absolute z-30 bottom-[calc(5vh+2.25rem)] left-1/2 -translate-x-1/2 text-[#8fc1ff]/60 hover:text-white transition-colors animate-bounce"
+        aria-label={t('Bajar', 'Scroll down')}
       >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="cursor-pointer"
-          onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-        >
-          <ChevronDown className="w-8 h-8 text-muted-foreground hover:text-primary transition-colors" />
-        </motion.div>
-      </motion.div>
+        <ChevronDown className="w-7 h-7" />
+      </button>
     </section>
   )
 }

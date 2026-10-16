@@ -4,18 +4,20 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { LangToggle, useLang } from '@/components/lang'
 
 const navLinks = [
-  { href: '/',              label: 'HitsON'        },
-  { href: '/gold-feathers', label: 'Gold Feathers'  },
-  { href: '/portfolio',     label: 'Portfolio'      },
-  { href: '/backstage',     label: 'Backstage'      },
-  { href: '/contacto',      label: 'Contacto'       },
+  { href: '/',              es: 'HitsON',        en: 'HitsON'        },
+  { href: '/gold-feathers', es: 'Gold Feathers', en: 'Gold Feathers' },
+  { href: '/portfolio',     es: 'Portfolio',     en: 'Portfolio'     },
+  { href: '/backstage',     es: 'Backstage',     en: 'Backstage'     },
+  { href: '/contacto',      es: 'Contacto',      en: 'Contact'       },
 ]
 
 export function Navbar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const { t } = useLang()
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
@@ -31,7 +33,7 @@ export function Navbar() {
 
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-1">
-          {navLinks.map(({ href, label }) => {
+          {navLinks.map(({ href, es, en }) => {
             const active = pathname === href
             return (
               <li key={href}>
@@ -44,13 +46,17 @@ export function Navbar() {
                   }`}
                   style={active ? { color: '#39C5BB', borderBottom: '2px solid #39C5BB' } : {}}
                 >
-                  {label}
+                  {t(es, en)}
                 </Link>
               </li>
             )
           })}
         </ul>
 
+        <div className="flex items-center gap-2">
+          <div className="hidden md:block">
+            <LangToggle />
+          </div>
         {/* Mobile hamburger */}
         <button
           className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -59,13 +65,17 @@ export function Navbar() {
         >
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
       {open && (
         <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-md">
+          <div className="px-4 pt-3">
+            <LangToggle />
+          </div>
           <ul className="flex flex-col px-4 py-3 gap-1">
-            {navLinks.map(({ href, label }) => {
+            {navLinks.map(({ href, es, en }) => {
               const active = pathname === href
               return (
                 <li key={href}>
@@ -79,7 +89,7 @@ export function Navbar() {
                     }`}
                     style={active ? { color: '#39C5BB' } : {}}
                   >
-                    {label}
+                    {t(es, en)}
                   </Link>
                 </li>
               )

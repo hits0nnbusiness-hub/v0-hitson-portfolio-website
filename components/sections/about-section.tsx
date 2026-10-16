@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { useLang } from '@/components/lang'
 
 const skills = [
   'Blender',
@@ -24,6 +25,7 @@ interface AboutSectionProps {
 export function AboutSection({ accentColor }: AboutSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { t } = useLang()
 
   return (
     <section id="about" className="py-24 md:py-32 px-4 relative overflow-hidden" ref={ref}>
@@ -37,9 +39,9 @@ export function AboutSection({ accentColor }: AboutSectionProps) {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <span className="text-secondary text-sm font-heading tracking-widest uppercase">About</span>
+          <span className="text-secondary text-sm font-heading tracking-widest uppercase">{t('Quién soy', 'About')}</span>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mt-2">
-            Acerca de <span className="text-primary">mí</span>
+            {t('Acerca de ', 'About ')}<span className="text-primary">{t('mí', 'me')}</span>
           </h2>
         </motion.div>
 
@@ -51,17 +53,22 @@ export function AboutSection({ accentColor }: AboutSectionProps) {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <p className="text-lg md:text-xl text-foreground/90 leading-relaxed mb-6">
-              <span className="text-primary font-semibold">Multifaceted artist.</span> Narrative, visual, and interpretive.
+              <span className="text-primary font-semibold">{t('Artista multifacético.', 'Multifaceted artist.')}</span>{' '}
+              {t('Narrativo, visual e interpretativo.', 'Narrative, visual, and interpretive.')}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Expert in 3D animation, VFX, sound design, and video editing. Creating immersive digital experiences that blend technology with storytelling.
+              {t(
+                'Animación 3D, VFX, diseño sonoro, música y edición. Cuento historias que mezclan tecnología, cómic y cine.',
+                '3D animation, VFX, sound design, music, and editing. I tell stories that blend technology, comics, and film.'
+              )}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              <span className="text-secondary">Master&apos;s degree</span> in 3D Animation & Post-Production from UNIAT (Universidad Internacional de Avances Tecnológicos).
+              {t('Cortometrajes ', 'Short films ')}
+              <span className="text-secondary">{t('premiados en festivales internacionales', 'awarded at international festivals')}</span>.
             </p>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-              <span>Based in México</span>
+              <span>{t('Desde México', 'Based in Mexico')}</span>
             </div>
           </motion.div>
 
@@ -72,7 +79,7 @@ export function AboutSection({ accentColor }: AboutSectionProps) {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <h3 className="font-heading text-lg text-muted-foreground mb-6">
-              Herramientas / <span className="text-secondary">Tools</span>
+              {t('Herramientas', 'Tools')}
             </h3>
             <div className="flex flex-wrap gap-3">
               {skills.map((skill, index) => (

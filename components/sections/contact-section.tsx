@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Send, Loader2, Instagram, Facebook, Youtube } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { useRef } from 'react'
+import { Mail, Instagram, Facebook, Youtube } from 'lucide-react'
+import { useLang } from '@/components/lang'
+
+const EMAIL = 'hits0nbusiness@outlook.es'
 
 interface ContactSectionProps {
   accentColor?: string
@@ -15,45 +15,8 @@ interface ContactSectionProps {
 export function ContactSection({ accentColor }: ContactSectionProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  const [email, setEmail] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email) return
-    
-    setIsSubmitting(true)
-    setError(null)
-    
-    try {
-      const supabase = createClient()
-      const { error: insertError } = await supabase
-        .from('contacts')
-        .insert({ email })
-      
-      if (insertError) throw insertError
-
-      // Enviar notificacion
-      await fetch('/api/notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      })
-      
-      setIsSubmitted(true)
-      setEmail('')
-      
-      // Reset after 3 seconds
-      setTimeout(() => setIsSubmitted(false), 3000)
-    } catch (err) {
-      console.error('Error saving contact:', err)
-      setError('Hubo un error. Intenta de nuevo.')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  const { t } = useLang()
+  const subject = encodeURIComponent(t('Colaboración con HitsON', 'Collaboration with HitsON'))
 
   return (
     <section id="contact" className="py-24 md:py-32 px-4 bg-card/30 relative overflow-hidden" ref={ref}>
@@ -67,75 +30,36 @@ export function ContactSection({ accentColor }: ContactSectionProps) {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-primary text-sm font-heading tracking-widest uppercase">Contact</span>
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-2">
-            Trabajemos juntos
+          <span className="text-primary text-sm font-heading tracking-widest uppercase">{t('Colaboraciones', 'Collaborations')}</span>
+          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-6">
+            {t('¿Hacemos algo juntos?', 'Shall we make something?')}
           </h2>
-          <p className="text-2xl md:text-3xl text-secondary mb-8">
-            Let&apos;s create.
+          <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed mb-3">
+            {t(
+              'No tomo cualquier proyecto. Si eres artista o creador y tienes una idea que valga la pena, cuéntamela.',
+              "I don't take every project. If you're an artist or creator with an idea worth making, tell me about it."
+            )}
           </p>
-          <p className="text-muted-foreground mb-12 text-sm">
+          <p className="text-muted-foreground mb-10 text-sm">
             Ma titequitican / <span className="text-secondary">Tlazohcamati</span>
           </p>
         </motion.div>
 
-        <motion.form
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
         >
-          <Input
-            type="email"
-            placeholder="tu@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={isSubmitting}
-            className="flex-1 bg-card border-border focus:border-primary focus:ring-primary h-12 px-4 text-foreground placeholder:text-muted-foreground"
-          />
-          <Button
-            type="submit"
-            disabled={isSubmitting || isSubmitted}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-heading font-semibold h-12 px-6 transition-all hover:scale-105 disabled:opacity-70"
-            style={{
-              backgroundColor: accentColor,
-              boxShadow: accentColor ? `0 0 20px ${accentColor}66` : undefined,
-            }}
+          <a
+            href={`mailto:${EMAIL}?subject=${subject}`}
+            className="inline-flex items-center gap-2 rounded-md px-8 py-4 font-heading font-semibold text-white transition-transform hover:scale-105"
+            style={{ backgroundColor: accentColor, boxShadow: accentColor ? `0 0 24px ${accentColor}66` : undefined }}
           >
-            {isSubmitting ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : isSubmitted ? (
-              '¡Enviado!'
-            ) : (
-              <>
-                <Send className="w-4 h-4 mr-2" />
-                Enviar
-              </>
-            )}
-          </Button>
-        </motion.form>
-
-        {isSubmitted && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-secondary mt-4 text-sm"
-          >
-            ¡Gracias! Te contactare pronto.
-          </motion.p>
-        )}
-
-        {error && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-red-500 mt-4 text-sm"
-          >
-            {error}
-          </motion.p>
-        )}
+            <Mail className="w-5 h-5" />
+            {t('Escríbeme', 'Write to me')}
+          </a>
+          <p className="mt-4 font-mono text-xs tracking-wider text-muted-foreground">{EMAIL}</p>
+        </motion.div>
 
         {/* Social Links */}
         <motion.div
@@ -197,7 +121,7 @@ export function ContactSection({ accentColor }: ContactSectionProps) {
             © {new Date().getFullYear()} <span className="text-foreground">HitsON</span> · Horacio Nahum Avendaño
           </p>
           <p className="flex items-center gap-2">
-            Hecho en <span className="text-primary">México</span> · ⚡️
+            {t('Hecho en ', 'Made in ')}<span className="text-primary">{t('México', 'Mexico')}</span> · ⚡️
           </p>
         </div>
       </motion.footer>

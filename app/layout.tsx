@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Navbar } from '@/components/navbar'
+import { LangProvider } from '@/components/lang'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({ 
@@ -17,7 +18,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'HitsON | Digital Filmmaker · 3D Animation · VFX',
   description: 'Multifaceted artist specializing in 3D animation, VFX, sound design, and video editing. Stories from the digital underworld.',
-  keywords: ['filmmaker', '3D animation', 'VFX', 'sound design', 'video editing', 'Mexico', 'Gold Feathers'],
+  keywords: ['HitsON', 'filmmaker', '3D animation', 'VFX', 'sound design', 'video editing', 'Mexico', 'Gold Feathers'],
   authors: [{ name: 'HitsON - Horacio Nahum Avendaño' }],
   generator: 'v0.app',
   icons: {
@@ -36,11 +37,13 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${spaceGrotesk.variable} ${inter.variable} bg-background scroll-smooth`}>
       <body className="font-body antialiased">
-        <Navbar />
-        {/* pt-14 so content doesn't hide behind the fixed navbar */}
-        <div className="pt-14">
-          {children}
-        </div>
+        <LangProvider>
+          <Navbar />
+          {/* pt-14 so content doesn't hide behind the fixed navbar */}
+          <div className="pt-14">
+            {children}
+          </div>
+        </LangProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
