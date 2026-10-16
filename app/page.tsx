@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { HeroSection } from '@/components/sections/hero-section'
 import { AboutSection } from '@/components/sections/about-section'
+import { DanceSection } from '@/components/sections/dance-section'
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -45,6 +46,7 @@ export default function Home() {
       <main className="min-h-screen bg-background">
         <HeroSection  accentColor={accentColor} />
         <AboutSection accentColor={accentColor} />
+        <DanceSection />
       </main>
     </>
   )
