@@ -51,6 +51,13 @@ export function Navbar() {
               </li>
             )
           })}
+          <li>
+            <a href="/verity.html" target="_blank" rel="noopener noreferrer"
+              className="px-4 py-1.5 text-sm font-heading font-medium underline underline-offset-4 transition-opacity hover:opacity-80"
+              style={{ color: '#f4b400' }}>
+              verity.file.exe
+            </a>
+          </li>
         </ul>
 
         <div className="flex items-center gap-2">
@@ -94,6 +101,14 @@ export function Navbar() {
                 </li>
               )
             })}
+            <li>
+              <a href="/verity.html" target="_blank" rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2.5 text-sm font-heading font-medium underline underline-offset-4"
+                style={{ color: '#f4b400' }}>
+                verity.file.exe
+              </a>
+            </li>
           </ul>
         </div>
       )}
